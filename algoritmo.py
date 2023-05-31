@@ -1,66 +1,56 @@
 import threading
 import time
+import os
 
-bloqueio = False  # Variável compartilhada para exclusão mútua
-file = "arquivo.txt"  # Arquivo compartilhado
+bloqueio = False
 
-# Função do processo que escreve no arquivo
 def escreve():
 
-    global bloqueio  # Declaração da variável bloqueio como global
+    global bloqueio
 
     while True:
         while bloqueio:
             # Espera ocupada
-            print("Espera: Escreve")
             time.sleep(1)
-        
-        # Seção crítica
-        bloqueio = True  # Bloqueia o acesso de outros processos
-        with open(file, "a") as f:
-            f.write(f"Processo de escrita escreveu no arquivo\n")
-        
+
+        bloqueio = True 
+
+        texto = input("Escreva: ")
+        with open(arquivo, "a") as f:
+            f.write(f"> {texto}\n")
+
+        bloqueio = False
         time.sleep(1)
-        print("Escreveu")
 
-        bloqueio = False  # Libera o acesso para outros processos
-        
-        
-        # Seção não crítica
-        # ...
 
-# Função do processo que lê o arquivo
 def leitura():
-    
-    global bloqueio  # Declaração da variável bloqueio como global
+
+    global bloqueio
 
     while True:
         while bloqueio:
             # Espera ocupada
-            print("Espera: Leitura")
             time.sleep(1)
-        
-        # Seção crítica
-        bloqueio = True  # Bloqueia o acesso de outros processos
-        with open(file, "r") as f:
-            content = f.read()
-            print(f"Processo de leitura leu o arquivo: {content}")
 
+        bloqueio = True
+
+        os.system('cls')
+        with open(arquivo, "r") as f:
+            conteudo = f.read()
+            print(f"Lista atual: \n{conteudo}")
+
+        bloqueio = False
         time.sleep(1)
 
-        bloqueio = False  # Libera o acesso para outros processos
-        
-        # Seção não crítica
-        # ...
 
-# Criação das threads para os processos de escrita e leitura
+print("Criando uma lista...\n")
+arquivo = input("Digite o nome da sua lista sem espaços e acentos: ")
+
 thread_escreve = threading.Thread(target=escreve)
 thread_ler = threading.Thread(target=leitura)
 
-# Inicia a execução das threads
 thread_escreve.start()
 thread_ler.start()
 
-# Aguarda o término das threads
 thread_escreve.join()
 thread_ler.join()
