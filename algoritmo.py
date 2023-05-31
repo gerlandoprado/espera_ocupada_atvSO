@@ -43,8 +43,9 @@ def leitura():
         time.sleep(1)
 
 
-print("Criando uma lista...\n")
+print("\nCriando uma lista...")
 arquivo = input("Digite o nome da sua lista sem espaços e acentos: ")
+arquivo = f"{arquivo}.txt"
 
 thread_escreve = threading.Thread(target=escreve)
 thread_ler = threading.Thread(target=leitura)
