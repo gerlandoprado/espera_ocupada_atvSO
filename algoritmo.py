@@ -13,7 +13,7 @@ def escreve():
             # Espera ocupada
             time.sleep(1)
 
-        bloqueio = True 
+        bloqueio = True
 
         texto = input("Escreva: ")
         with open(arquivo, "a") as f:
